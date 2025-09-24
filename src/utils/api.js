@@ -151,8 +151,17 @@ export const fetchCustomerAnalytics = async (limit = 50, storeId = 'all') => {
 
 export const fetchDirectOperations = async () => {
   try {
-    const response = await api.get('?endpoint=fetch-direct-ops');
-    return response.data.data || null;
+    // Call the Supabase Edge Function directly
+    const response = await fetch('https://yhuxzdqwxzsepfkjjoan.supabase.co/functions/v1/fetch-direct-ops', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${ANON_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    const data = await response.json();
+    return data.data || null;
   } catch (error) {
     console.error('Error fetching direct operations data:', error);
     // Return fallback data if API fails
