@@ -149,6 +149,21 @@ export const fetchCustomerAnalytics = async (limit = 50, storeId = 'all') => {
   }
 };
 
+export const fetchDirectOperations = async () => {
+  try {
+    const response = await api.get('?endpoint=fetch-direct-ops');
+    return response.data.data || null;
+  } catch (error) {
+    console.error('Error fetching direct operations data:', error);
+    // Return fallback data if API fails
+    return {
+      locations: [],
+      lastUpdated: new Date().toISOString(),
+      error: 'Unable to load direct operations data'
+    };
+  }
+};
+
 // Utility function to format currency
 export const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-GB', {

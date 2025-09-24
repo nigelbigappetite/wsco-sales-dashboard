@@ -5,6 +5,7 @@ import KpiCard from '../components/ui/KpiCard';
 import DataTable from '../components/ui/DataTable';
 import FilterBar from '../components/ui/FilterBar';
 import TrendChart from '../components/ui/TrendChart';
+import { fetchDirectOperations } from '../utils/api';
 
 const DirectOperations = ({ 
   loading = false, 
@@ -13,17 +14,114 @@ const DirectOperations = ({
 }) => {
   const [filters, setFilters] = useState({});
   const [directOpsData, setDirectOpsData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch direct operations data
+  useEffect(() => {
+    const loadDirectOpsData = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchDirectOperations();
+        setDirectOpsData(data);
+      } catch (error) {
+        console.error('Error loading direct operations data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadDirectOpsData();
+  }, []);
 
   // Sample data structure based on your Google Sheets format
   const sampleData = {
     locations: [
       {
-        id: 'mixed',
-        name: 'Mixed (All Platforms)',
-        type: 'combined',
-        totalRevenue: 65463.42,
-        totalOrders: 2411,
-        avgAOV: 27.15,
+        id: 'loughton',
+        name: 'Loughton',
+        type: 'location',
+        totalRevenue: 18500.00,
+        totalOrders: 680,
+        avgAOV: 27.21,
+        platforms: {
+          mixed: { revenue: 18500.00, orders: 680, aov: 27.21 },
+          wingverse: { revenue: 4200.00, orders: 160, aov: 26.25 },
+          deliveroo: { revenue: 9800.00, orders: 350, aov: 28.00 },
+          uber: { revenue: 3500.00, orders: 130, aov: 26.92 },
+          justeat: { revenue: 1000.00, orders: 40, aov: 25.00 }
+        },
+        dailyData: [
+          { date: '2025-09-21', revenue: 450.00, orders: 16, aov: 28.13 },
+          { date: '2025-09-20', revenue: 520.00, orders: 19, aov: 27.37 },
+          { date: '2025-09-19', revenue: 480.00, orders: 18, aov: 26.67 },
+          { date: '2025-09-18', revenue: 380.00, orders: 14, aov: 27.14 },
+          { date: '2025-09-17', revenue: 420.00, orders: 15, aov: 28.00 },
+          { date: '2025-09-16', revenue: 350.00, orders: 13, aov: 26.92 },
+          { date: '2025-09-15', revenue: 400.00, orders: 15, aov: 26.67 }
+        ]
+      },
+      {
+        id: 'maidstone',
+        name: 'Maidstone',
+        type: 'location',
+        totalRevenue: 16800.00,
+        totalOrders: 620,
+        avgAOV: 27.10,
+        platforms: {
+          mixed: { revenue: 16800.00, orders: 620, aov: 27.10 },
+          wingverse: { revenue: 3800.00, orders: 145, aov: 26.21 },
+          deliveroo: { revenue: 8900.00, orders: 320, aov: 27.81 },
+          uber: { revenue: 3200.00, orders: 120, aov: 26.67 },
+          justeat: { revenue: 900.00, orders: 35, aov: 25.71 }
+        },
+        dailyData: [
+          { date: '2025-09-21', revenue: 420.00, orders: 15, aov: 28.00 },
+          { date: '2025-09-20', revenue: 480.00, orders: 18, aov: 26.67 },
+          { date: '2025-09-19', revenue: 450.00, orders: 17, aov: 26.47 },
+          { date: '2025-09-18', revenue: 360.00, orders: 13, aov: 27.69 },
+          { date: '2025-09-17', revenue: 400.00, orders: 15, aov: 26.67 },
+          { date: '2025-09-16', revenue: 320.00, orders: 12, aov: 26.67 },
+          { date: '2025-09-15', revenue: 380.00, orders: 14, aov: 27.14 }
+        ]
+      },
+      {
+        id: 'chatham',
+        name: 'Chatham',
+        type: 'location',
+        totalRevenue: 15200.00,
+        totalOrders: 560,
+        avgAOV: 27.14,
+        platforms: {
+          mixed: { revenue: 15200.00, orders: 560, aov: 27.14 },
+          wingverse: { revenue: 3400.00, orders: 130, aov: 26.15 },
+          deliveroo: { revenue: 8000.00, orders: 290, aov: 27.59 },
+          uber: { revenue: 3000.00, orders: 110, aov: 27.27 },
+          justeat: { revenue: 800.00, orders: 30, aov: 26.67 }
+        },
+        dailyData: [
+          { date: '2025-09-21', revenue: 380.00, orders: 14, aov: 27.14 },
+          { date: '2025-09-20', revenue: 440.00, orders: 16, aov: 27.50 },
+          { date: '2025-09-19', revenue: 410.00, orders: 15, aov: 27.33 },
+          { date: '2025-09-18', revenue: 330.00, orders: 12, aov: 27.50 },
+          { date: '2025-09-17', revenue: 370.00, orders: 14, aov: 26.43 },
+          { date: '2025-09-16', revenue: 300.00, orders: 11, aov: 27.27 },
+          { date: '2025-09-15', revenue: 350.00, orders: 13, aov: 26.92 }
+        ]
+      },
+      {
+        id: 'wanstead',
+        name: 'Wanstead',
+        type: 'location',
+        totalRevenue: 14963.42,
+        totalOrders: 551,
+        avgAOV: 27.16,
+        platforms: {
+          mixed: { revenue: 14963.42, orders: 551, aov: 27.16 },
+          wingverse: { revenue: 3097.93, orders: 119, aov: 26.03 },
+          deliveroo: { revenue: 7847.23, orders: 282, aov: 27.83 },
+          uber: { revenue: 2835.95, orders: 103, aov: 27.53 },
+          justeat: { revenue: 1182.31, orders: 47, aov: 25.16 }
+        },
         dailyData: [
           { date: '2025-09-21', revenue: 353.44, orders: 13, aov: 27.19 },
           { date: '2025-09-20', revenue: 765.73, orders: 24, aov: 31.91 },
@@ -33,73 +131,13 @@ const DirectOperations = ({
           { date: '2025-09-16', revenue: 168.69, orders: 9, aov: 18.74 },
           { date: '2025-09-15', revenue: 491.95, orders: 20, aov: 24.60 }
         ]
-      },
-      {
-        id: 'wingverse',
-        name: 'Wingverse (Slerp)',
-        type: 'platform',
-        totalRevenue: 14497.93,
-        totalOrders: 554,
-        avgAOV: 26.17,
-        dailyData: [
-          { date: '2025-09-21', revenue: 91.69, orders: 2, aov: 45.85 },
-          { date: '2025-09-20', revenue: 25.45, orders: 1, aov: 25.45 },
-          { date: '2025-09-19', revenue: 55.35, orders: 2, aov: 27.68 },
-          { date: '2025-09-18', revenue: 55.40, orders: 2, aov: 27.70 },
-          { date: '2025-09-17', revenue: 119.10, orders: 4, aov: 29.78 },
-          { date: '2025-09-16', revenue: 12.45, orders: 1, aov: 12.45 },
-          { date: '2025-09-15', revenue: 113.45, orders: 3, aov: 37.82 }
-        ]
-      },
-      {
-        id: 'deliveroo',
-        name: 'Deliveroo',
-        type: 'platform',
-        totalRevenue: 38147.23,
-        totalOrders: 1382,
-        avgAOV: 27.60,
-        dailyData: [
-          { date: '2025-09-21', revenue: 202.30, orders: 7, aov: 28.90 },
-          { date: '2025-09-20', revenue: 609.10, orders: 19, aov: 32.06 },
-          { date: '2025-09-19', revenue: 617.25, orders: 24, aov: 25.72 },
-          { date: '2025-09-18', revenue: 129.90, orders: 7, aov: 18.56 },
-          { date: '2025-09-17', revenue: 235.85, orders: 10, aov: 23.59 },
-          { date: '2025-09-16', revenue: 142.80, orders: 7, aov: 20.40 },
-          { date: '2025-09-15', revenue: 315.00, orders: 13, aov: 24.23 }
-        ]
-      },
-      {
-        id: 'uber',
-        name: 'Uber Eats',
-        type: 'platform',
-        totalRevenue: 13835.95,
-        totalOrders: 573,
-        avgAOV: 24.15,
-        dailyData: [
-          { date: '2025-09-21', revenue: 59.45, orders: 4, aov: 14.86 },
-          { date: '2025-09-20', revenue: 131.18, orders: 4, aov: 32.80 },
-          { date: '2025-09-19', revenue: 147.33, orders: 7, aov: 21.05 },
-          { date: '2025-09-18', revenue: 19.20, orders: 1, aov: 19.20 },
-          { date: '2025-09-17', revenue: 69.65, orders: 3, aov: 23.22 },
-          { date: '2025-09-16', revenue: 13.44, orders: 1, aov: 13.44 },
-          { date: '2025-09-15', revenue: 63.50, orders: 4, aov: 15.88 }
-        ]
-      },
-      {
-        id: 'justeat',
-        name: 'Just Eat',
-        type: 'platform',
-        totalRevenue: 0,
-        totalOrders: 0,
-        avgAOV: 0,
-        dailyData: []
       }
     ],
     lastUpdated: new Date().toISOString()
   };
 
-  // Use sample data for now - will be replaced with real Google Sheets data
-  const displayData = directOpsData || sampleData;
+  // Use real data if available, otherwise fall back to sample data
+  const displayData = directOpsData && directOpsData.locations ? directOpsData : sampleData;
 
   // Calculate totals across all locations
   const totalRevenue = displayData.locations.reduce((sum, loc) => sum + (loc.totalRevenue || 0), 0);
@@ -117,13 +155,11 @@ const DirectOperations = ({
   const locationColumns = [
     {
       key: 'name',
-      title: 'Location/Platform',
+      title: 'Location',
       render: (value, item) => (
         <div>
           <div className="font-semibold">{value}</div>
-          <div className="text-sm text-gray-500">
-            {item.type === 'combined' ? 'All Platforms Combined' : 'Individual Platform'}
-          </div>
+          <div className="text-sm text-gray-500">Direct Operations</div>
         </div>
       )
     },
@@ -145,6 +181,21 @@ const DirectOperations = ({
       render: (value) => `£${value?.toFixed(2)}`
     },
     {
+      key: 'platforms',
+      title: 'Platforms',
+      render: (value, item) => {
+        const activePlatforms = Object.keys(item.platforms || {}).filter(platform => 
+          item.platforms[platform].revenue > 0
+        ).length;
+        return (
+          <div>
+            <div className="font-semibold">{activePlatforms}/4</div>
+            <div className="text-sm text-gray-500">Active</div>
+          </div>
+        );
+      }
+    },
+    {
       key: 'performance',
       title: 'Performance',
       render: (value, item) => {
@@ -164,24 +215,56 @@ const DirectOperations = ({
     }
   ];
 
-  // Platform distribution data for charts
-  const platformData = displayData.locations
-    .filter(loc => loc.type === 'platform' && loc.totalRevenue > 0)
-    .map(loc => ({
-      name: loc.name,
-      revenue: loc.totalRevenue,
-      orders: loc.totalOrders,
-      percentage: totalRevenue > 0 ? ((loc.totalRevenue / totalRevenue) * 100) : 0
-    }));
+  // Platform distribution data for charts - aggregate across all locations
+  const platformTotals = {
+    wingverse: { revenue: 0, orders: 0 },
+    deliveroo: { revenue: 0, orders: 0 },
+    uber: { revenue: 0, orders: 0 },
+    justeat: { revenue: 0, orders: 0 }
+  };
+
+  displayData.locations.forEach(location => {
+    if (location.platforms) {
+      Object.keys(platformTotals).forEach(platform => {
+        if (location.platforms[platform]) {
+          platformTotals[platform].revenue += location.platforms[platform].revenue || 0;
+          platformTotals[platform].orders += location.platforms[platform].orders || 0;
+        }
+      });
+    }
+  });
+
+  const platformData = Object.keys(platformTotals).map(platform => ({
+    name: platform === 'wingverse' ? 'Wingverse (Slerp)' : 
+          platform === 'uber' ? 'Uber Eats' :
+          platform === 'justeat' ? 'Just Eat' : platform,
+    revenue: platformTotals[platform].revenue,
+    orders: platformTotals[platform].orders,
+    percentage: totalRevenue > 0 ? ((platformTotals[platform].revenue / totalRevenue) * 100) : 0
+  }));
 
   return (
     <div className="direct-operations">
       {/* Filter Bar */}
-      <FilterBar
-        filters={filters}
-        onFiltersChange={setFilters}
-        onRefresh={onRefresh}
-        loading={loading}
+        <FilterBar
+          filters={filters}
+          onFiltersChange={setFilters}
+          onRefresh={() => {
+            // Refresh direct operations data
+            const loadDirectOpsData = async () => {
+              setIsLoading(true);
+              try {
+                const data = await fetchDirectOperations();
+                setDirectOpsData(data);
+              } catch (error) {
+                console.error('Error loading direct operations data:', error);
+              } finally {
+                setIsLoading(false);
+              }
+            };
+            loadDirectOpsData();
+          }}
+          loading={loading || isLoading}
         showDateRange={true}
         showStoreFilter={false}
         showSearch={false}
@@ -236,13 +319,13 @@ const DirectOperations = ({
       {/* Top Performer Highlight */}
       <div className="top-performer-section">
         <div className="section-header">
-          <h2>Top Performing Platform</h2>
-          <p>Best performing platform by revenue</p>
+          <h2>Top Performing Location</h2>
+          <p>Best performing location by revenue</p>
         </div>
         <div className="top-performer-card">
           <div className="performer-info">
             <h3>{topLocation.name}</h3>
-            <p>{topLocation.type === 'combined' ? 'All Platforms Combined' : 'Individual Platform'}</p>
+            <p>Direct Operations Location</p>
             <div className="performer-metrics">
               <div className="metric">
                 <span className="metric-label">Revenue</span>
@@ -264,8 +347,8 @@ const DirectOperations = ({
       {/* Location Performance Table */}
       <div className="location-performance-section">
         <div className="section-header">
-          <h2>Platform Performance</h2>
-          <p>Revenue and performance breakdown by platform</p>
+          <h2>Location Performance</h2>
+          <p>Revenue and performance breakdown by location</p>
         </div>
         <DataTable
           data={displayData.locations}
@@ -282,7 +365,7 @@ const DirectOperations = ({
       <div className="platform-distribution-section">
         <div className="section-header">
           <h2>Platform Revenue Distribution</h2>
-          <p>Revenue breakdown across all platforms</p>
+          <p>Revenue breakdown across all platforms (aggregated from all locations)</p>
         </div>
         <div className="platform-distribution">
           {platformData.map((platform, index) => (
