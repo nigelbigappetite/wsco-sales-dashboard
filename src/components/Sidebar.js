@@ -8,7 +8,8 @@ import {
   AlertCircle, 
   // Menu, 
   X,
-  Home
+  Home,
+  Building2
 } from 'lucide-react';
 
 const Sidebar = ({ activePage, onPageChange, isMobileOpen, onMobileToggle }) => {
@@ -30,6 +31,12 @@ const Sidebar = ({ activePage, onPageChange, isMobileOpen, onMobileToggle }) => 
       label: 'Franchise Performance',
       icon: Store,
       description: 'Store performance analysis'
+    },
+    {
+      id: 'direct-operations',
+      label: 'Direct Operations',
+      icon: Building2,
+      description: 'Directly operated locations'
     },
     {
       id: 'product-analytics',

@@ -7,6 +7,7 @@ import DashboardHeader from './components/DashboardHeader';
 import OverviewPage from './pages/OverviewPage';
 import LiveOrdersPage from './pages/LiveOrdersPage';
 import FranchisePerformance from './pages/FranchisePerformance';
+import DirectOperations from './pages/DirectOperations';
 import ProductAnalytics from './pages/ProductAnalytics';
 import AlertsSignals from './pages/AlertsSignals';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -172,6 +173,14 @@ function App() {
         return (
           <FranchisePerformance
             storePerformance={storePerformance}
+            loading={loading}
+            onRefresh={handleRefresh}
+            dashboardData={dashboardData}
+          />
+        );
+      case 'direct-operations':
+        return (
+          <DirectOperations
             loading={loading}
             onRefresh={handleRefresh}
             dashboardData={dashboardData}
